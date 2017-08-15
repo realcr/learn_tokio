@@ -1,3 +1,31 @@
+/*
+
+To use this example you will need a working postgresql server.
+You could easily get one with docker:
+
+docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=123456 -d postgres
+
+Next, you need to add a table. You can do it with psql:
+psql -h localhost -p 5432 -U postgres --password
+
+In psql, type the following:
+CREATE TABLE greetings (
+  id serial,
+  body text
+);
+
+INSERT INTO greetings (body) VALUES
+  ('Hello'),
+  ('안녕하세요'),
+  ('Bonjour'),
+  ('好'),
+  ('Здравствуйте');
+
+After starting the program, enter 127.0.0.1:8080/db
+This should give you a random greeting.
+ 
+*/
+
 #[macro_use]
 extern crate serde_derive;
 
