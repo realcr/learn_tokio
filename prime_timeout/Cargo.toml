@@ -1,0 +1,9 @@
+[package]
+name = "prime_timeout"
+version = "0.1.0"
+authors = ["real <real@freedomlayer.org>"]
+
+[dependencies]
+futures = "0.1"
+futures-cpupool = "0.1"
+tokio-timer = "0.1"
