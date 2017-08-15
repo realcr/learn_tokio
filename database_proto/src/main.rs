@@ -106,7 +106,8 @@ fn main() {
     let addr = "127.0.0.1:8080".parse().unwrap();
     let thread_pool = CpuPool::new(10);
 
-    let db_url = "postgres://postgres@localhost";
+
+    let db_url = "postgres://postgres:123456@localhost";
     let db_config = r2d2::Config::default();
     let db_manager = PostgresConnectionManager::new(
         db_url, TlsMode::None).unwrap();
@@ -120,5 +121,4 @@ fn main() {
         })
     });
 
-    println!("Hello, world!");
 }
