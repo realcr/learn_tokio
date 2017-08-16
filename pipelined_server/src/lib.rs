@@ -34,8 +34,8 @@ pub fn serve<S>(s: S, address: &str) -> io::Result<()>
         let (writer, reader) = socket.framed(LineCodec).split();
         let service = s.new_service()?;
 
-        let responses = reader.and_then(move |req| service.call(req));
-        let server = writer.send_all(responses)
+        let response = reader.and_then(move |req| service.call(req));
+        let server = writer.send_all(response)
             .then(|_| Ok(()));
         handle.spawn(server);
 
