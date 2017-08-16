@@ -13,12 +13,12 @@ use std::io;
 use tokio_core::reactor::Core;
 use tokio_core::net::TcpListener;
 use tokio_service::{Service, NewService};
-use futures::{future, Future, Stream, Sink};
+use futures::{Future, Stream, Sink};
 use tokio_io::AsyncRead;
 
 use line_codec::LineCodec;
 
-fn serve<S>(s: S) -> io::Result<()>
+pub fn serve<S>(s: S, address: &str) -> io::Result<()>
     where S: NewService<Request = String,
                         Response = String,
                         Error = io::Error> + 'static
@@ -26,7 +26,7 @@ fn serve<S>(s: S) -> io::Result<()>
     let mut core = Core::new()?;
     let handle = core.handle();
 
-    let address = "0.0.0.0:12345".parse().unwrap();
+    let address = address.parse().unwrap();
     let listener = TcpListener::bind(&address, &handle)?;
 
     let connections = listener.incoming();
