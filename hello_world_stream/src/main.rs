@@ -33,7 +33,7 @@ fn concurrent_server() {
 
 
     let address = "0.0.0.0:12345".parse().unwrap();
-    let listener = TcpListener::bind(&address, &core.handle())
+    let listener = TcpListener::bind(&address, &handle)
         .unwrap();
 
     let connections = listener.incoming();
