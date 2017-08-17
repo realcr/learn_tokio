@@ -36,6 +36,8 @@ fn main() {
         Ok(())
     });
 
+    // let val = server.wait();
+
     let val = core.run(server);
     println!("val = {:?}", val);
 }
