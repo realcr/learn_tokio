@@ -9,7 +9,7 @@ use self::tokio_proto::streaming::pipeline::ServerProto;
 
 use line_codec::LineCodec;
 
-struct LineProto;
+pub struct LineProto;
 
 impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> 
     for LineProto {
