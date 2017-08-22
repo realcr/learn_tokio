@@ -1,3 +1,13 @@
+extern crate streaming_proto;
+extern crate tokio_proto;
+
+use self::tokio_proto::TcpServer;
+use streaming_proto::line_proto::LineProto;
+use streaming_proto::service::PrintStdout;
+
+
 fn main() {
-    println!("Hello, world!");
+    let addr = "0.0.0.0:12345".parse().unwrap();
+    let server = TcpServer::new(LineProto, addr);
+    server.serve(|| Ok(PrintStdout));
 }
