@@ -6,7 +6,7 @@ use std::io;
 use std::str;
 
 use self::tokio_proto::streaming::pipeline::Frame;
-use self::bytes::{BytesMut, BigEndian, IntoBuf, Buf, BufMut};
+use self::bytes::{BytesMut};
 use self::tokio_io::codec::{Encoder, Decoder};
 
 
