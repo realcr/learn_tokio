@@ -7,7 +7,7 @@ use std::io;
 use self::tokio_proto::pipeline::ServerProto;
 use self::tokio_io::{AsyncRead, AsyncWrite};
 use self::tokio_io::codec::Framed;
-use self::futures::{Future, future, Stream, Sink};
+use self::futures::{Future, future, Stream, Sink, IntoFuture};
 use self::futures::stream::SplitSink;
 
 
@@ -26,18 +26,13 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for LineProto {
         // let transport = io.framed(LineCodec);
         let transport = io.framed(LineCodec);
 
-        // .send("You ready?".into())
-        //
-        /*
-         *fn reunite(self, other: SplitSink<S>) -> Result<S, ReuniteError<S>>
-         */
-
-
-        Box::new(transport.send("You ready?".into())
+        let fut = transport
+            .send("You ready?".into())
             .and_then(|transport| {
-                transport.into_future()
+                Ok(transport.into_future())
             })
-            .map_err(|(e, _)| e)
+            // .map_err(|(e, _)| e)
+            // .map_err(|(e, _)| e)
             .and_then(|(line, transport)| {
                 match line {
                     Some(ref msg) if msg == "Bring it!" => {
@@ -53,9 +48,9 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for LineProto {
                         Box::new(ret) as Self::BindTransport
                     }
                 }
-            })
+            });
 
-        )
+        Box::new(fut)
     }
 }
 
