@@ -7,8 +7,7 @@ use std::io;
 use self::tokio_proto::pipeline::ServerProto;
 use self::tokio_io::{AsyncRead, AsyncWrite};
 use self::tokio_io::codec::Framed;
-use self::futures::{Future, future, Stream, Sink, IntoFuture};
-use self::futures::stream::SplitSink;
+use self::futures::{Future, future, Stream, Sink};
 
 
 use line_codec::LineCodec;
