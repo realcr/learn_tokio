@@ -28,11 +28,8 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for LineProto {
 
         let fut = transport
             .send("You ready?".into())
-            .and_then(|transport| {
-                Ok(transport.into_future())
-            })
-            // .map_err(|(e, _)| e)
-            // .map_err(|(e, _)| e)
+            .map(|transport| transport.into_future())
+            .and_then(|transport| transport.map_err(|(e,_)| e))
             .and_then(|(line, transport)| {
                 match line {
                     Some(ref msg) if msg == "Bring it!" => {
