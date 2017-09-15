@@ -1,0 +1,4 @@
+[root]
+name = "noncompiling_lifetime_trait"
+version = "0.1.0"
+

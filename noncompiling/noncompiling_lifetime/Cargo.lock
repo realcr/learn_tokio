@@ -1,0 +1,4 @@
+[root]
+name = "noncompiling_lifetime"
+version = "0.1.0"
+
