@@ -31,8 +31,8 @@ struct FragMsgReceiver2<'a> {
 }
 */
 
-struct FragMsgReceiver<'a,'c:'a> {
-    recv_dgram: &'a FnMut(&mut [u8]) -> Box<MockFutureTrait<Item=&mut [u8]> + 'c>,
+struct FragMsgReceiver<'a> {
+    recv_dgram: &'a for<'b> FnMut(&'b mut [u8]) -> Box<MockFutureTrait<Item=&'b mut [u8]> + 'b>,
 }
 
 /*
@@ -46,7 +46,7 @@ struct RecvMsg<'a,'c,F>
 */
 
 /*
-fn recv_dgram<'b:'c,'c>(buff: &'b mut [u8]) -> Box<MockFutureTrait<Item=&'b mut [u8]> + 'c> {
+fn recv_dgram<'b>(buff: &'b mut [u8]) -> Box<MockFutureTrait<Item=&'b mut [u8]> + 'b> {
     Box::new(MockFuture {
         item: buff,
     })
@@ -54,21 +54,22 @@ fn recv_dgram<'b:'c,'c>(buff: &'b mut [u8]) -> Box<MockFutureTrait<Item=&'b mut 
 */
 
 fn constrain_handler<F>(f: F) -> F
-where F: for <'r> FnMut(&'r mut [u8]) -> Box<MockFutureTrait<Item=&'r mut [u8]>> {
+where F: for <'r> FnMut(&'r mut [u8]) -> Box<MockFutureTrait<Item=&'r mut [u8]> + 'r> {
     f
 }
 
 
 fn main() {
-    let mut recv_dgram = constrain_handler(|buf: &mut [u8]| {
+    let mut recv_dgram = constrain_handler(|buf| {
         Box::new(MockFuture {
             item: buf,
         }) as Box<MockFutureTrait<Item=&mut [u8]>>
     });
+    // let ref_recv_dgram = &mut constrain_handler(recv_dgram);
 
-    let ref_recv_dgram = &mut recv_dgram;
+    // let ref_recv_dgram = &mut constrain_handler(recv_dgram);
     let fmr = FragMsgReceiver {
-        recv_dgram: ref_recv_dgram,
+        recv_dgram: &mut recv_dgram,
     };
 }
 
